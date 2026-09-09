@@ -1,0 +1,11 @@
+/data/HIGGS.csv
+/data/HIGGS.csv.gz
+/data/higgs.zip
+/output/
+/higgs_rq12_output/
+/analysis/__pycache__/
+/.venv/
+*.asv
+*.m~
+.DS_Store
+Thumbs.db
