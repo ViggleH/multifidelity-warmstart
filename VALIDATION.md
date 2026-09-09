@@ -1,3 +1,5 @@
+> Historical audit record for the original local package. The audit source and homepage described below are not included in the current public snapshot. For the data publication on 9 September 2026, the archive and its checksums were verified, the five CSV/MAT inputs were confirmed byte-identical, and the included plotting script reproduced the current figures. No new MATLAB run or new 950-check audit is claimed.
+
 # Release validation
 
 The repository's `python analysis/analyze_results.py` entry point was executed

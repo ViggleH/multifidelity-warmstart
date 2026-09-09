@@ -10,14 +10,21 @@ The distance diagnostics examine this conservatism.
 
 ## Start here
 
+- [Download the complete numerical data archive](data/ESM_1.zip?raw=true) (21.5 MB).
+- [Archive contents, attribution, and SHA-256 checksum](data/README.md).
 - [Summary data](results/higgs_rq12_summary.csv): medians and ranges across subset seeds.
 - [Individual decisions](results/higgs_rq12_decisions.csv): all 27 parameter combinations.
 - [Raw evaluated budgets](results/higgs_rq12_raw.csv): 510 budget/target records.
-- [MATLAB results](results/higgs_rq12_results.mat): references, trajectories, and settings.
-- [Experiment sample](data/higgs_high_sample.mat): the standardized high-fidelity data.
-- [Data dictionary](DATA_DICTIONARY.md) and [data provenance](data/README.md).
+- [Data dictionary](DATA_DICTIONARY.md).
 
-![Empirical cost curves for the three sample ratios](results/higgs_rq1_cost_curves.png)
+The archive contains the processed sample, full MATLAB results and saved
+trajectories, all three CSV tables, a portable figure script, PDF documentation,
+metadata, and file checksums. It is the data package prepared for
+*Cost-Aware Iteration Allocation for Sequential Multi-Fidelity First-Order Optimization*
+by Zhongda Huang, Amir Ardestani-Jaafari, and Warren Hare (corresponding author:
+warren.hare@ubc.ca).
+
+![Observed cost curves for the three sample ratios](results/Fig1.png)
 
 ## Experiment
 
@@ -40,36 +47,39 @@ deviation. Changing the sample ratio changes cost, mismatch, and curvature toget
 
 ## Inspect the archived results in MATLAB
 
-Open the downloaded repository as MATLAB's current folder and run:
+Open the downloaded repository as MATLAB's current folder. Extract the archive
+once, then use the existing viewer:
 
 ```matlab
+unzip(fullfile('data', 'ESM_1.zip'), 'results');
 view_higgs_results
 ```
 
-This loads the MAT results and displays the CSV summary. It does not require
-the full HIGGS CSV or a new optimization run. The `results` folder contains the
-archived outputs; new computations use `output`.
+This places the archived MAT files beside the CSV tables and displays the
+summary. It does not require the full HIGGS CSV or a new optimization run.
+The separately browsable CSVs above are byte-identical to those in the archive.
 
-## Reproduce the analysis and figures
+## Regenerate the manuscript figures
 
-The included sample and archived trajectories are sufficient for this step;
-the full source dataset is not needed. From the repository root, use Python
-3.11 or newer and run:
+With Python, NumPy, pandas, SciPy, Matplotlib, and Arial installed, run from the
+repository root:
 
 ```bash
-python -m pip install -r analysis/requirements.txt
-python analysis/analyze_results.py
+python -m zipfile -e data/ESM_1.zip output/archived_data
+python output/archived_data/make_figures.py
 ```
 
-The analysis checks CSV/MAT consistency, cost identities, first-hitting counts,
-reference solutions, nested subsets, and distance bounds. It independently
-replays the direct high-fidelity trajectory and six representative warm starts,
-then regenerates the diagnostic figures and the two paper PDFs.
-Outputs are saved to `output/analysis` and `output/figures`.
+The script writes Figures 1 and 2 as PDF, EPS, and PNG to
+`output/archived_data/regenerated_figures`. It uses the archived measurements
+and trajectories, checks cost normalization and distance consistency, and
+does not rerun optimization or modify the input data. Both vector figures are
+119 mm wide. The archive's `README.pdf` includes the complete data dictionary
+and reproduction notes.
 
-These checks are specific to the archived experiment. Their expected counts
-should be revised if the experiment design changes. The surrogate comparisons
-use reference solutions and saved trajectories; they are post-hoc diagnostics.
+The earlier independent audit described in [VALIDATION.md](VALIDATION.md) is
+a historical packaging record. Its `analysis/analyze_results.py` source is not
+part of this public snapshot; the commands above use the plotting source that
+is actually included in the downloadable archive.
 
 ## Rerun the full MATLAB experiment
 
@@ -101,7 +111,7 @@ The unchanged experiment generator accepts a CSV, not the distributed sample MAT
 
 MATLAB is required to run the generator. Its helper functions are included in
 the same file; earlier separate solver files are not used. The original MATLAB
-release was not recorded, and the release package has not been rerun in MATLAB
+release was not recorded, and the public package has not been rerun in MATLAB
 in the packaging environment. The Python audit is an independent check of the
 supplied experiment, not a claim of MATLAB/Octave compatibility.
 
@@ -122,14 +132,14 @@ supplied experiment, not a claim of MATLAB/Octave compatibility.
 
 | Path | Contents |
 | --- | --- |
-| `generate_higgs_sensitivity_data.m` | Original experiment generator and all solver helpers |
+| `generate_higgs_sensitivity_data.m` | Experiment generator and solver helpers |
 | `run_higgs_rq12.m` | Portable runner for a new full experiment |
-| `view_higgs_results.m` | MATLAB viewer for the archived outputs |
-| `data/` | Standardized experimental sample and provenance |
-| `results/` | Archived CSV/MAT outputs and figures |
-| `analysis/` | Independent numerical audit and figure scripts |
-| `docs/` | Static GitHub Pages project homepage |
-| `SHA256SUMS.txt` | Checksums of packaged files, excluding this checksum list |
+| `view_higgs_results.m` | MATLAB viewer, after extracting the archive as above |
+| `data/ESM_1.zip` | Complete numerical archive, sample, trajectories, and plotting source |
+| `data/README.md` | Archive documentation and source attribution |
+| `results/` | Browsable copies of the three CSVs and current figure previews |
+| `DATA_DICTIONARY.md` | Numerical field definitions |
+| `SHA256SUMS.txt` | Checksums of tracked files, excluding this checksum list |
 
 ## Data source and permissions
 
@@ -140,9 +150,10 @@ The included sample is a stratified and standardized derivative; see
 [data/README.md](data/README.md) for the transformation and attribution.
 No project-wide software license has been assigned in this initial package.
 
-## Publishing the repository and project page
+## Versioned citation
 
-See [PUBLISHING.md](PUBLISHING.md). The homepage is prepared for
-`ViggleH/multifidelity-warmstart`; update its repository links if the owner or
-repository name changes. The page becomes public after GitHub Pages deployment
-succeeds. A local copy of `docs/index.html` can be opened before publication.
+For an exact data citation, use the archive's commit permalink rather than a
+moving branch link: open `data/ESM_1.zip` on GitHub and choose its permanent
+link. The SHA-256 digest in [data/README.md](data/README.md) identifies this
+archive independently of its download location. No optimization was rerun
+for this data publication.

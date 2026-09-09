@@ -1,3 +1,5 @@
+> Historical setup instructions: the initial public upload omitted the described subfolders. The current data archive and working reproduction instructions are linked from [README.md](README.md). The `docs` homepage mentioned below is not included in this snapshot.
+
 # Publish on GitHub
 
 ## Repository form
