@@ -1,53 +1,44 @@
-# Numerical data archive
+# Numerical data and code
 
-**Article:** Cost-Aware Iteration Allocation for Sequential Multi-Fidelity First-Order Optimization  
-**Authors:** Zhongda Huang; Amir Ardestani-Jaafari; Warren Hare  
-**Target journal:** Journal of Global Optimization  
-**Corresponding author:** Warren Hare, Department of Mathematics, University of British Columbia,
-3187 University Way, Kelowna, BC V1V 1V7, Canada; warren.hare@ubc.ca
+The [current reproduction archive](https://github.com/ViggleH/multifidelity-warmstart/releases/download/manuscript-2026-09-11/jogo-reproduction.zip) is distributed as the
+`manuscript-2026-09-11` [GitHub release](https://github.com/ViggleH/multifidelity-warmstart/releases/tag/manuscript-2026-09-11). It contains all inputs required to
+regenerate the current manuscript figures and table, including the processed
+HIGGS sample, saved trajectories, simulation code, and publication CSVs.
 
-[Download ESM_1.zip](ESM_1.zip?raw=true) (21,469,581 bytes).
+File size is 27,385,518 bytes. SHA-256
 
-SHA-256:
+```text
+a6c5653670f277e47767858291e91d478c18013f704524353824d22cb1719672
+```
+
+The archive's `CHECKSUMS.sha256` covers every other member. `PROVENANCE.json`
+records the reviewed manuscript hash and original input archive hash.
+See the repository [README](../README.md) for reproduction commands and
+[data dictionary](../DATA_DICTIONARY.md) for current versus historical fields.
+
+## Original archive
+
+[ESM_1.zip](ESM_1.zip?raw=true) remains byte-identical to the original public
+snapshot at commit `cb1daa8d9a4dfecfdff577299fe2801f214ea789`.
+It is 21,469,581 bytes with SHA-256
+
 ```text
 8b5819a835d47dbce43bbdc5c6286c85a5293e7a365f4662c0440860e9a6f3bd
 ```
 
-The archive is the complete numerical package prepared on 9 September 2026.
-Its internal documentation calls it Online Resource 1. The package is now
-publicly distributed here; that internal label does not assert that a journal
-has published or accepted the manuscript.
+Its internal figure script and numerical summaries describe the earlier
+experiment. Use the current release for the manuscript's present results.
+The name Online Resource 1 inside the historical archive does not indicate
+journal acceptance or publication.
 
-| File in the archive | Contents |
-| --- | --- |
-| `higgs_high_sample.mat` | Standardized sample, labels, source indices, and preprocessing statistics |
-| `higgs_rq12_results.mat` | Settings, reference solutions, saved optimization trajectories, and decisions |
-| `higgs_rq12_raw.csv` | 510 evaluated budget/target records |
-| `higgs_rq12_decisions.csv` | 27 seed/ratio/target decisions |
-| `higgs_rq12_summary.csv` | 9 ratio/target summaries over three subset seeds |
-| `make_figures.py` | Portable source for both manuscript figures |
-| `README.pdf` | Data dictionary, attribution, and reproduction instructions |
-| `metadata.json` | Article metadata and original-data checksums |
-| `SHA256SUMS.txt` | Checksums for every other archive member |
+## Attribution
 
-All five CSV/MAT files are preserved byte for byte. The separately browsable
-CSVs in `../results` match the archive. The two `.mat` files are supplied inside
-the archive. See the [repository README](../README.md) for Python plotting and
-MATLAB inspection commands.
+Daniel Whiteson (2014), HIGGS, UCI Machine Learning Repository,
+[doi:10.24432/C5V312](https://doi.org/10.24432/C5V312), distributed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The sample contains 110,000 stratified observations with 28 standardized
+features. The MAT file preserves labels, source row indices, feature means,
+and sample standard deviations. No project-wide software license is assigned.
 
-## Source data and transformation
-
-Whiteson, Daniel (2014). **HIGGS**. UCI Machine Learning Repository.
-[Dataset DOI](https://doi.org/10.24432/C5V312).
-[Dataset page](https://archive.ics.uci.edu/dataset/280/higgs).
-
-The source is distributed under [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
-The included derivative is a stratified sample of 110,000 observations from
-the 11,000,000-row source, with 28 standardized features and binary labels.
-The MAT file preserves source row indices and the feature mean and standard
-deviation. This notice attributes the source dataset; no new project-wide
-software license is assigned here.
-
-The measurements describe one high-fidelity instance, three subset seeds,
-three sample ratios, and three accuracy targets. They are not 27 independent
-data sets. Cost is normalized gradient work, not wall-clock time.
+The associated manuscript is by Amir Ardestani-Jaafari, Warren Hare, and
+Zhongda Huang. Warren Hare is the corresponding author, warren.hare@ubc.ca.
