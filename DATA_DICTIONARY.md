@@ -1,67 +1,69 @@
-# Result data dictionary
+# Current publication data
 
-The original numeric CSVs and MAT files are preserved. `NaN` denotes an
-unresolved or undefined value; it must not be replaced by a successful iteration limit.
+The manuscript uses completed iterations, with `Cost_obs = c1*K1 + c2*K2`,
+`c1 = r`, and `c2 = 1`. Certificate checks have no separate charge.
+The current publication CSVs are authoritative for the paper's results.
 
-## CSV tables
+## Files
 
-| File | Row unit | Archived rows |
-| --- | --- | ---: |
-| `higgs_rq12_raw.csv` | Subset seed / ratio / tested K1 / accuracy target | 510 |
-| `higgs_rq12_decisions.csv` | Subset seed / ratio / accuracy target | 27 |
-| `higgs_rq12_summary.csv` | Ratio / accuracy target, summarized over seeds | 9 |
-
-## Shared settings and measurements
-
-| Column | Meaning |
+| File | Contents |
 | --- | --- |
-| `seed` | Low-fidelity nested-subset seed |
-| `r_requested`, `r_actual` | Requested and realized low/high sample ratios |
-| `n_low`, `epsilon` | Low-fidelity sample size and high-fidelity objective-gap target |
-| `L1`, `L2`, `mu` | Global smoothness constants; common strong-convexity constant |
-| `R1`, `R2` | Reference distances from zero to the low/high minimizer |
-| `Delta` | Distance between the reference minimizers |
-| `K1` | Tested low-fidelity iterations; zero is direct high-fidelity AGD |
-| `K2_gap` | First high-fidelity iterate reaching the target; may be zero |
-| `cost` | `r_actual * K1 + K2_gap` |
-| `direct_cost` | Direct high-fidelity first-hitting count |
-| `cost_over_direct` | Tested cost divided by direct cost |
-| `target_reached` | 1 when this candidate reaches this target |
-| `hf_iterations_run` | Length of the shared high-fidelity trajectory, not the first hit for each target |
-| `warm_gap`, `warm_distance` | High-fidelity objective gap and minimizer distance at transfer |
-| `transfer_distance_bound` | Rate-plus-minimizer-gap bound at transfer |
-| `comparison_complete` | 1 when all required candidate comparisons are resolved |
+| `publication_methods.csv` | 108 records, four methods in each of 27 configurations |
+| `publication_candidates.csv` | All 870 tested budget/target records |
+| `publication_summary.csv` | 36 summaries by ratio, target, and method over three seeds |
+| `publication_aggregate.csv` | Four summaries across all 27 configurations |
+| `performance_markers.csv` | Values for every method marker in Figure 2 |
+| `distance_diagnostics.csv` | Reference distances and certificate bounds for Figure 1 |
+| `allocation_summary_table.tex` | The manuscript's compact three-row table |
 
-## Allocation and performance columns
+These files are in `results/` in the repository and `figures/current/` in the
+reproduction archive. The `higgs_rq12_*.csv` files in `results/` are historical
+MATLAB outputs from 9 September and do not reproduce the current table.
 
-| Column | Meaning |
+## Fields
+
+| Field | Meaning |
 | --- | --- |
-| `K1_continuous` | Continuous positive warm-start minimizer of the sufficient-cost model |
-| `K1_warm` | Preferred positive integer neighbor before comparing with direct AGD |
-| `K1_selected` | Executable theoretical decision; zero if direct AGD is selected |
-| `K1_empirical` | Best tested budget, with ties favoring the smaller budget |
-| `direct_bound`, `warm_bound`, `selected_bound` | Corresponding sufficient costs |
-| `selected_cost`, `empirical_cost` | Observed work for the selected and best tested budgets |
-| `regret` | `selected_cost / empirical_cost - 1`, stored as a fraction |
-| `speedup` | `direct_cost / selected_cost` |
-| `theory_warm` | 1 if the model selects a positive budget |
-| `empirical_warm` | 1 if any tested positive budget strictly improves on direct AGD |
-| `agreement` | Equality of these two warm/direct labels |
-| `harmful_selected_warm` | Positive selected budget is more expensive than direct AGD |
-| `candidate_count`, `reached_candidates` | Numbers of tested and resolved candidates |
-| `low_reference_grad_norm`, `high_reference_grad_norm` | Reference-solve residuals |
+| `seed` | Low-fidelity subset seed, 11, 12, or 13 |
+| `r` | Low/high sample ratio and normalized low-fidelity iteration cost |
+| `epsilon` | Target high-fidelity objective gap, certified by the gradient |
+| `method` | `direct`, `initial_certificate`, `cost_comparison`, or `best_tested_fixed` |
+| `status` | `complete` for all published method records |
+| `low_steps`, `high_steps` | Completed iterations K1 and K2 |
+| `c1`, `c2` | Iteration cost weights r and 1 |
+| `observed_cost` | c1*K1 + c2*K2 |
+| `direct_cost` | Cost of direct high-fidelity AGD at the same target |
+| `best_tested_budget`, `best_tested_cost` | Best fixed budget and cost in the tested set |
+| `cost_ratio` | direct_cost / observed_cost; above one improves on direct |
+| `regret_percent` | 100*(observed_cost / best_tested_cost - 1) |
+| `beneficial` | Whether observed cost is strictly smaller than direct cost |
+| `candidate_sources` | Provenance of a tested budget in the finite search set |
+| `plotted_cost_over_direct` | observed_cost / direct_cost, the Figure 2 vertical coordinate |
+| `fixed_budget_cost_at_same_k` | Cost on the matching fixed-budget curve |
+| `K_median`, `K_min`, `K_max` | Low-fidelity iteration summaries across subset seeds |
+| `ratio_median`, `ratio_min`, `ratio_max` | Direct-to-method cost-ratio summaries |
+| `regret_median` | Median percentage regret |
+| `runs` | Number of configurations summarized |
 
-Summary suffixes `_median`, `_min`, and `_max` refer to the three subset seeds.
-`regret_pct_*` stores percentages. `n_complete`, `n_unresolved`,
-`n_regret_valid`, and `n_speedup_valid` record the corresponding valid denominators.
-`*_count` fields count the relevant Boolean labels across seeds.
+In aggregate/summary files, `beneficial` is a count rather than a Boolean.
+Figure 1 fields ending in `_reference` use numerical reference minimizers.
+Its two `_transfer_bound` columns contain unnormalized bounds; the lower
+panels divide each by `transfer_distance_reference`. The upper panels divide
+the measured distances by `minimizer_mismatch_reference`.
 
-## MATLAB archive
+## Preserved experiment records
 
-`higgs_rq12_results.mat` contains `results` with `config`, `signature`,
-`sampling`, `high`, `runs`, and the exported `raw`, `decisions`, and `summary` tables.
-`runs{seed_index, ratio_index}` retains low-fidelity indices, references,
-low-fidelity iterates, high-fidelity trajectories, and budget decisions.
-Array indices are one-based in MATLAB; stored subset/source indices retain
-that convention when read in Python. The archive includes historical source
-and output paths as provenance; the public runners use repository-relative paths.
+The archive includes immutable simulation outputs and checkpoints under
+`higgs_cost_comparison_output/`. Those raw files retain an earlier
+gradient-call cost convention and a budget-below-one control. The current
+paper excludes that control and recomputes costs from the saved iteration
+counts using `figures/make_figures.py`. It reselects the best tested fixed
+budget under the current cost convention, with ties favoring smaller budgets.
+Do not substitute raw `total_work`, speedup, or regret fields for the current
+publication values. The three files under `higgs_online_certificate_output/`
+preserve earlier candidate-set inputs required by the experiment runner.
+
+There are 27 dependent comparisons on one shared HIGGS sample. They combine
+three ratios, three targets, and three subset seeds. The tested-budget
+benchmark is retrospective and excludes search costs. These configurations
+were used during rule development; they are not a held-out evaluation.
